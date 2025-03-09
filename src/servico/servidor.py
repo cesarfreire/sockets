@@ -44,7 +44,7 @@ class Servidor:
                 comando = ComandoAtualizar(self.banco, pessoa)
             elif operacao == 'DELETE' and len(dados) == 1:
                 comando = ComandoApagar(self.banco, dados[0])
-            if operacao == 'LIST':
+            elif operacao == 'LIST':
                 comando = ComandoListar(self.banco)
             elif operacao == 'UNDO':
                 resposta = self.pilha_comandos.desfazer()
