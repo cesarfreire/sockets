@@ -1,5 +1,5 @@
-# Classe para armazenar comandos
-from src.comandos.comando_abstrato import Comando
+# Classe para armazenar comando
+from src.comando.comando_abstrato import Comando
 
 
 class PilhaComandos:

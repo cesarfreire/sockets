@@ -4,12 +4,12 @@ import threading
 from src.base_dados.banco_dados import BancoDeDadosLocal
 from src.base_dados.banco_dados_abstrato import BancoDeDados
 from src.base_dados.pilha_comandos import PilhaComandos
-from src.comandos.comando_apagar import ComandoApagar
-from src.comandos.comando_atualizar import ComandoAtualizar
-from src.comandos.comando_criar import ComandoCriar
-from src.comandos.comando_ler import ComandoLer
-from src.comandos.comando_listar import ComandoListar
-from src.models.pessoa import Pessoa
+from src.comando.comando_apagar import ComandoApagar
+from src.comando.comando_atualizar import ComandoAtualizar
+from src.comando.comando_criar import ComandoCriar
+from src.comando.comando_ler import ComandoLer
+from src.comando.comando_listar import ComandoListar
+from src.modelo.pessoa import Pessoa
 
 
 # Servidor Socket

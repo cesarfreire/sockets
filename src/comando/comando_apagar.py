@@ -1,6 +1,6 @@
 from src.base_dados.banco_dados_abstrato import BancoDeDados
-from src.comandos.comando_abstrato import Comando
-from src.models.pessoa import Pessoa
+from src.comando.comando_abstrato import Comando
+from src.modelo.pessoa import Pessoa
 
 
 class ComandoApagar(Comando):

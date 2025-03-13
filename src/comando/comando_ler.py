@@ -1,5 +1,5 @@
 from src.base_dados.banco_dados_abstrato import BancoDeDados
-from src.comandos.comando_abstrato import Comando
+from src.comando.comando_abstrato import Comando
 
 
 class ComandoLer(Comando):

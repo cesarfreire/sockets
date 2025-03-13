@@ -1,4 +1,4 @@
-from src.models.entidade import Entidade
+from src.modelo.entidade import Entidade
 
 
 class Pessoa(Entidade):

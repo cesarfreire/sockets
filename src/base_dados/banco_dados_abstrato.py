@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.models.pessoa import Pessoa
+from src.modelo.pessoa import Pessoa
 
 
 class BancoDeDados(ABC):

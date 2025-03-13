@@ -1,5 +1,5 @@
-from src.models.entidade import Entidade
-from src.models.pessoa import Pessoa
+from src.modelo.entidade import Entidade
+from src.modelo.pessoa import Pessoa
 
 
 class Time(Entidade):
