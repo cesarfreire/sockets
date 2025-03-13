@@ -4,7 +4,7 @@ from src.comandos.comando_abstrato import Comando
 
 class ComandoListar(Comando):
     def __init__(self, banco: BancoDeDados) -> None:
-        self.banco = banco
+        self.banco: BancoDeDados = banco
 
     def executar(self) -> str:
         return self.banco.listar()

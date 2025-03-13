@@ -5,7 +5,7 @@ from src.models.pessoa import Pessoa
 
 class BancoDeDadosLocal(BancoDeDados):
     def __init__(self):
-        self.dados = {
+        self.dados: dict = {
             "12345678900": "Fulano;Rua A",
             "98765432100": "Ciclano;Rua B",
             "10481485996": "Cesar;Wenceslau Borini"
@@ -18,7 +18,7 @@ class BancoDeDadosLocal(BancoDeDados):
         return "Criado com sucesso."
 
     def ler(self, cpf: str) -> str:
-        dados = self.dados.get(cpf)
+        dados: str = self.dados.get(cpf)
         if not dados:
             return "Pessoa não encontrada."
         return f"{cpf};{dados.__str__()}"
@@ -38,11 +38,11 @@ class BancoDeDadosLocal(BancoDeDados):
         return "Pessoa removida com sucesso."
 
     def listar(self) -> str:
-        total = len(self.dados)
+        total: int = len(self.dados)
         if total == 0:
             return str(total)
 
-        linhas = []
+        linhas: list = []
         for cpf, info in self.dados.items():
             linha = f"{cpf};{info}"
             linhas.append(linha)

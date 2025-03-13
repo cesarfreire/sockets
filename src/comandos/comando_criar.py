@@ -5,8 +5,8 @@ from src.models.pessoa import Pessoa
 
 class ComandoCriar(Comando):
     def __init__(self, banco: BancoDeDados, pessoa: Pessoa) -> None:
-        self.banco = banco
-        self.pessoa = pessoa
+        self.banco: BancoDeDados = banco
+        self.pessoa: Pessoa = pessoa
 
     def executar(self) -> str:
         return self.banco.criar(self.pessoa)
