@@ -1,11 +1,11 @@
 from abc import ABC, abstractmethod
 
-from src.models.pessoa import Pessoa
+from src.modelo.pessoa import Pessoa
 
 
 class BancoDeDados(ABC):
     @abstractmethod
-    def criar(self, pessoa: Pessoa):
+    def criar(self, pessoa: Pessoa) -> str:
         pass
 
     @abstractmethod
@@ -13,11 +13,11 @@ class BancoDeDados(ABC):
         pass
 
     @abstractmethod
-    def atualizar(self, pessoa: Pessoa):
+    def atualizar(self, pessoa: Pessoa) -> str:
         pass
 
     @abstractmethod
-    def deletar(self, cpf: str):
+    def deletar(self, cpf: str) -> str:
         pass
 
     @abstractmethod

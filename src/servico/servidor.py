@@ -2,28 +2,29 @@ import socket
 import threading
 
 from src.base_dados.banco_dados import BancoDeDadosLocal
+from src.base_dados.banco_dados_abstrato import BancoDeDados
 from src.base_dados.pilha_comandos import PilhaComandos
-from src.comandos.comando_apagar import ComandoApagar
-from src.comandos.comando_atualizar import ComandoAtualizar
-from src.comandos.comando_criar import ComandoCriar
-from src.comandos.comando_ler import ComandoLer
-from src.comandos.comando_listar import ComandoListar
-from src.models.pessoa import Pessoa
+from src.comando.comando_apagar import ComandoApagar
+from src.comando.comando_atualizar import ComandoAtualizar
+from src.comando.comando_criar import ComandoCriar
+from src.comando.comando_ler import ComandoLer
+from src.comando.comando_listar import ComandoListar
+from src.modelo.pessoa import Pessoa
 
 
 # Servidor Socket
 class Servidor:
-    def __init__(self, host='127.0.0.1', porta=3333):
-        self.host = host
-        self.porta = porta
-        self.servidor = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    def __init__(self, host='127.0.0.1', porta=3333) -> None:
+        self.host: str = host
+        self.porta: int = porta
+        self.servidor: socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.servidor.bind((self.host, self.porta))
         self.servidor.listen(5)
-        self.banco = BancoDeDadosLocal()
-        self.pilha_comandos = PilhaComandos()
+        self.banco: BancoDeDados = BancoDeDadosLocal()
+        self.pilha_comandos: PilhaComandos = PilhaComandos()
         print(f"Servidor escutando em {self.host}:{self.porta}")
 
-    def handle_cliente(self, conexao, endereco):
+    def handle_cliente(self, conexao, endereco) -> None:
         print(f"Nova conexão de {endereco}")
         while True:
             mensagem = conexao.recv(1024).decode()
@@ -63,7 +64,7 @@ class Servidor:
             conexao.send(resposta.encode())
         conexao.close()
 
-    def iniciar(self):
+    def iniciar(self) -> None:
         while True:
             conexao, endereco = self.servidor.accept()
             thread = threading.Thread(target=self.handle_cliente, args=(conexao, endereco))

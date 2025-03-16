@@ -1,4 +1,4 @@
-from src.models.pessoa import Pessoa
+from src.modelo.pessoa import Pessoa
 
 
 class Jogador(Pessoa):

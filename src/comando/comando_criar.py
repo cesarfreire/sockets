@@ -1,12 +1,12 @@
 from src.base_dados.banco_dados_abstrato import BancoDeDados
-from src.comandos.comando_abstrato import Comando
-from src.models.pessoa import Pessoa
+from src.comando.comando_abstrato import Comando
+from src.modelo.pessoa import Pessoa
 
 
 class ComandoCriar(Comando):
     def __init__(self, banco: BancoDeDados, pessoa: Pessoa) -> None:
-        self.banco = banco
-        self.pessoa = pessoa
+        self.banco: BancoDeDados = banco
+        self.pessoa: Pessoa = pessoa
 
     def executar(self) -> str:
         return self.banco.criar(self.pessoa)
