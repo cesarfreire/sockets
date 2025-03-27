@@ -10,6 +10,7 @@ from src.comando.pessoa.comando_criar_pessoa import ComandoCriarPessoa
 from src.comando.pessoa.comando_ler_pessoa import ComandoLerPessoa
 from src.comando.pessoa.comando_listar_pessoas import ComandoListarPessoas
 from src.comando.time.comando_apagar_time import ComandoApagarTime
+from src.comando.time.comando_atualizar_time import ComandoAtualizarTime
 from src.comando.time.comando_criar_time import ComandoCriarTime
 from src.comando.time.comando_ler_time import ComandoLerTime
 from src.comando.time.comando_listar_times import ComandoListarTimes
@@ -55,7 +56,7 @@ class Servidor:
                 comando = ComandoListarPessoas(self.banco)
 
             # Comandos para Time
-            elif operacao == 'INSERT_TIME' and len(dados) >= 2:
+            elif operacao == 'INSERT_TIME' and len(dados) >= 4:
                 nome = dados[0]
                 categoria = dados[1]
                 pais_origem = dados[2]
@@ -65,10 +66,18 @@ class Servidor:
                 comando = ComandoCriarTime(self.banco, time, cpfs)
             elif operacao == 'GET_TIME' and len(dados) == 1:
                 comando = ComandoLerTime(self.banco, dados[0])
-            # elif operacao == 'UPDATE_TIME' and len(dados) >= 2:
-            #     nome = dados[0]
-            #     cpfs = dados[1:]
-            #     comando = ComandoAtualizarTime(self.banco, nome, cpfs)
+            elif operacao == 'UPDATE_TIME' and len(dados) == 4:
+                nome = dados[0]
+                categoria = dados[1]
+                pais_origem = dados[2]
+                quantidade_titulos = dados[3]
+                time = Time(
+                    nome=nome,
+                    categoria=categoria,
+                    pais_origem=pais_origem,
+                    quantidade_titulos=quantidade_titulos
+                )
+                comando = ComandoAtualizarTime(self.banco, time=time)
             elif operacao == 'DELETE_TIME' and len(dados) == 1:
                 comando = ComandoApagarTime(self.banco, dados[0])
             elif operacao == 'LIST_TIMES':

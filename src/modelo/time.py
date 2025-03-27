@@ -11,7 +11,7 @@ class Time(Entidade):
         self.participantes: list[Pessoa] = []
 
     def __str__(self) -> str:
-        return f'{self.nome};{self.categoria};{self.pais_origem};{self.quantidade_titulos};{self.participantes}'
+        return f'{self.nome};{self.categoria};{self.pais_origem};{self.quantidade_titulos};{self.participantes if len(self.participantes) > 0 else ""} '
 
     def adicionar_participante(self, pessoa: Pessoa) -> None:
         self.participantes.append(pessoa)

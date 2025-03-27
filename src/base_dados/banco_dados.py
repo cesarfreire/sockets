@@ -107,18 +107,12 @@ class BancoDeDadosLocal(BancoDeDados):
             partes: list = info.split(";")
             print(f"partes: {partes}")
             if partes[0] == nome:
-                pessoas_cpf = self.times_pessoas[id_time]
-                print(f"pessoas_cpf: {pessoas_cpf}")
-                pessoas = [f"{cpf};{self.pessoas[cpf]}" for cpf in pessoas_cpf]
-                print(f"pessoas: {pessoas}")
-                return f"{info}" + ";" + ";".join(pessoas)
-                # # separa os cpfs dos participantes
-                # pessoas_cpf = partes[4:]
-                # print(f"pessoas_cpf: {pessoas_cpf}")
-                # pessoas = [f"{cpf};{self.pessoas[cpf]}" for cpf in pessoas_cpf]
-                # print(f"pessoas: {pessoas}")
-                # # retorna as informações do time e dos participantes
-                # return f"{';'.join(info.split(';',5)[:4])}" + ";" + ";".join(pessoas)
+                pessoas_cpf = self.times_pessoas[id_time] if id_time in self.times_pessoas else []
+                pessoas = [f"{cpf};{self.pessoas[cpf]}" for cpf in pessoas_cpf if pessoas_cpf is not None]
+
+                if len(pessoas) > 0:
+                    return f"{info}" + ";" + ";".join(pessoas)
+                return f"{info}"
         return "Time não encontrado."
 
     def listar_times(self) -> str:
@@ -130,14 +124,27 @@ class BancoDeDadosLocal(BancoDeDados):
         for id_time, info in self.times.items():
             partes = info.split(";")
             print(f"partes: {partes}")
-            pessoas_cpf = self.times_pessoas[id_time]
+            pessoas_cpf = self.times_pessoas[id_time] if id_time in self.times_pessoas else []
             print(f"pessoas_cpf: {pessoas_cpf}")
-            pessoas = [f"{cpf};{self.pessoas[cpf]}" for cpf in pessoas_cpf]
-            linha = f"{id_time};{info}\nPessoas:\n" + "\n".join(pessoas)
-            linhas.append(linha)
+            pessoas = [f"{cpf};{self.pessoas[cpf]}" for cpf in pessoas_cpf if pessoas_cpf is not None]
+            linha_final = '-' * 50
+            if len(pessoas) > 0:
+                linha = f"{id_time};{info}\nPessoas:\n" + "\n".join(pessoas)
+                linhas.append(linha)
+                linhas.append(linha_final)
+            else:
+                linha = f"{id_time};{info}\nPessoas:\nNenhuma"
+                linhas.append(linha)
+                linhas.append(linha_final)
 
         print(f"linhas: {linhas}")
         return f"{total}\n" + "\n".join(linhas)
 
     def atualizar_time(self, time: Time) -> str:
-        pass
+        for time_id, time_dados in self.times.items():
+            if time.nome == time_dados.split(";")[0]:
+                self.times[time_id] = f"{time.__str__()}"
+                return "Time atualizado com sucesso."
+
+        return "Time não encontrado."
+
