@@ -2,7 +2,7 @@
 import socket
 
 class Cliente:
-    def __init__(self, host='127.0.0.1', porta=3333):
+    def __init__(self, host='127.0.0.1', porta=3334):
         self.host: str = host
         self.porta: int = porta
 

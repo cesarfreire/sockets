@@ -8,7 +8,13 @@ class Time(Entidade):
         self.categoria: str = categoria
         self.pais_origem: str = pais_origem
         self.quantidade_titulos: int = quantidade_titulos
-        self.jogadores: list[Pessoa] = []
+        self.participantes: list[Pessoa] = []
 
     def __str__(self) -> str:
-        return f'{self.nome};{self.categoria};{self.pais_origem};{self.quantidade_titulos}'
+        return f'{self.nome};{self.categoria};{self.pais_origem};{self.quantidade_titulos};{self.participantes}'
+
+    def adicionar_participante(self, pessoa: Pessoa) -> None:
+        self.participantes.append(pessoa)
+
+    def remover_participante(self, pessoa: Pessoa) -> None:
+        self.participantes.remove(pessoa)

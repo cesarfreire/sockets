@@ -4,17 +4,22 @@ import threading
 from src.base_dados.banco_dados import BancoDeDadosLocal
 from src.base_dados.banco_dados_abstrato import BancoDeDados
 from src.base_dados.pilha_comandos import PilhaComandos
-from src.comando.comando_apagar import ComandoApagar
-from src.comando.comando_atualizar import ComandoAtualizar
-from src.comando.comando_criar import ComandoCriar
-from src.comando.comando_ler import ComandoLer
-from src.comando.comando_listar import ComandoListar
+from src.comando.pessoa.comando_apagar_pessoa import ComandoApagarPessoa
+from src.comando.pessoa.comando_atualizar_pessoa import ComandoAtualizarPessoa
+from src.comando.pessoa.comando_criar_pessoa import ComandoCriarPessoa
+from src.comando.pessoa.comando_ler_pessoa import ComandoLerPessoa
+from src.comando.pessoa.comando_listar_pessoas import ComandoListarPessoas
+from src.comando.time.comando_apagar_time import ComandoApagarTime
+from src.comando.time.comando_criar_time import ComandoCriarTime
+from src.comando.time.comando_ler_time import ComandoLerTime
+from src.comando.time.comando_listar_times import ComandoListarTimes
 from src.modelo.pessoa import Pessoa
+from src.modelo.time import Time
 
 
 # Servidor Socket
 class Servidor:
-    def __init__(self, host='127.0.0.1', porta=3333) -> None:
+    def __init__(self, host='127.0.0.1', porta=3334) -> None:
         self.host: str = host
         self.porta: int = porta
         self.servidor: socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -35,18 +40,43 @@ class Servidor:
             operacao, *dados = mensagem.split(";")
             comando = None
 
+            # Comandos para Pessoa
             if operacao == 'INSERT' and len(dados) == 3:
                 pessoa = Pessoa(dados[0], dados[1], dados[2])
-                comando = ComandoCriar(self.banco, pessoa)
+                comando = ComandoCriarPessoa(self.banco, pessoa)
             elif operacao == 'GET' and len(dados) == 1:
-                comando = ComandoLer(self.banco, dados[0])
+                comando = ComandoLerPessoa(self.banco, dados[0])
             elif operacao == 'UPDATE' and len(dados) == 3:
                 pessoa = Pessoa(dados[0], dados[1], dados[2])
-                comando = ComandoAtualizar(self.banco, pessoa)
+                comando = ComandoAtualizarPessoa(self.banco, pessoa)
             elif operacao == 'DELETE' and len(dados) == 1:
-                comando = ComandoApagar(self.banco, dados[0])
+                comando = ComandoApagarPessoa(self.banco, dados[0])
             elif operacao == 'LIST':
-                comando = ComandoListar(self.banco)
+                comando = ComandoListarPessoas(self.banco)
+
+            # Comandos para Time
+            elif operacao == 'INSERT_TIME' and len(dados) >= 2:
+                nome = dados[0]
+                categoria = dados[1]
+                pais_origem = dados[2]
+                qtd_titulos = dados[3]
+                cpfs = dados[4:]
+                time = Time(nome, categoria, pais_origem, qtd_titulos)
+                comando = ComandoCriarTime(self.banco, time, cpfs)
+            elif operacao == 'GET_TIME' and len(dados) == 1:
+                comando = ComandoLerTime(self.banco, dados[0])
+            # elif operacao == 'UPDATE_TIME' and len(dados) >= 2:
+            #     nome = dados[0]
+            #     cpfs = dados[1:]
+            #     comando = ComandoAtualizarTime(self.banco, nome, cpfs)
+            elif operacao == 'DELETE_TIME' and len(dados) == 1:
+                comando = ComandoApagarTime(self.banco, dados[0])
+            elif operacao == 'LIST_TIMES':
+                comando = ComandoListarTimes(self.banco)
+
+
+
+            # Comandos de controle
             elif operacao == 'UNDO':
                 resposta = self.pilha_comandos.desfazer()
                 conexao.send(resposta.encode())

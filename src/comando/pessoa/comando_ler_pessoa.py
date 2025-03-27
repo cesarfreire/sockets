@@ -1,18 +1,17 @@
 from src.base_dados.banco_dados_abstrato import BancoDeDados
 from src.comando.comando_abstrato import Comando
-from src.modelo.pessoa import Pessoa
 
 
-class ComandoCriar(Comando):
-    def __init__(self, banco: BancoDeDados, pessoa: Pessoa) -> None:
+class ComandoLerPessoa(Comando):
+    def __init__(self, banco: BancoDeDados, cpf: str) -> None:
         self.banco: BancoDeDados = banco
-        self.pessoa: Pessoa = pessoa
+        self.cpf: str = cpf
 
     def executar(self) -> str:
-        return self.banco.criar(self.pessoa)
+        return self.banco.ler_pessoa(self.cpf)
 
     def desfazer(self) -> str:
-        return self.banco.deletar(self.pessoa.cpf)
+        return "Não é possível desfazer a leitura."
 
     def refazer(self) -> str:
         return self.executar()
