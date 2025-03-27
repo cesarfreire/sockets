@@ -5,22 +5,22 @@ from src.modelo.time import Time
 
 
 class BancoDeDadosLocal(BancoDeDados):
-    def __init__(self):
+    def __init__(self, iniciar_zerado: bool = False):
         self.pessoas: dict = {
             "12345678900": "Fulano;Rua A",
             "98765432100": "Ciclano;Rua B",
             "11111111111": "Cesar;Wenceslau Borini"
-        }
+        } if not iniciar_zerado else {}
 
         self.times: dict[int, str | None] = {
             1: "Flamengo;Profissional;Brasil;58",
             2: "Corinthians;Profissional;Brasil;2"
-        }
+        } if not iniciar_zerado else {}
 
         self.times_pessoas: dict[int, list[str]] = {
             1: ["11111111111", "98765432100"],
             2: ["12345678900"]
-        }
+        } if not iniciar_zerado else {}
 
     def criar_pessoa(self, pessoa: Pessoa) -> str:
         if pessoa.cpf in self.pessoas:
@@ -29,6 +29,8 @@ class BancoDeDadosLocal(BancoDeDados):
         return "Criado com sucesso."
 
     def ler_pessoa(self, cpf: str) -> str:
+        if len(self.pessoas) == 0:
+            return "Sem pessoas cadastradas."
         dados: str = self.pessoas.get(cpf)
         if not dados:
             return "Pessoa não encontrada."
@@ -61,9 +63,11 @@ class BancoDeDadosLocal(BancoDeDados):
             return str(total)
 
         linhas: list = []
+        linha_final = '-' * 50
         for cpf, info in self.pessoas.items():
             linha = f"{cpf};{info}"
             linhas.append(linha)
+            linhas.append(linha_final)
 
         return f"{total}\n" + "\n".join(linhas)
 

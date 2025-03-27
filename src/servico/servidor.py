@@ -4,6 +4,7 @@ import threading
 from src.base_dados.banco_dados import BancoDeDadosLocal
 from src.base_dados.banco_dados_abstrato import BancoDeDados
 from src.base_dados.pilha_comandos import PilhaComandos
+from src.comando.comando_me_ajuda import ComandoMeAjuda
 from src.comando.pessoa.comando_apagar_pessoa import ComandoApagarPessoa
 from src.comando.pessoa.comando_atualizar_pessoa import ComandoAtualizarPessoa
 from src.comando.pessoa.comando_criar_pessoa import ComandoCriarPessoa
@@ -84,7 +85,6 @@ class Servidor:
                 comando = ComandoListarTimes(self.banco)
 
 
-
             # Comandos de controle
             elif operacao == 'UNDO':
                 resposta = self.pilha_comandos.desfazer()
@@ -94,6 +94,8 @@ class Servidor:
                 resposta = self.pilha_comandos.refazer()
                 conexao.send(resposta.encode())
                 continue
+            elif operacao == 'HELP':
+                comando = ComandoMeAjuda()
 
             if comando:
                 resposta = comando.executar()

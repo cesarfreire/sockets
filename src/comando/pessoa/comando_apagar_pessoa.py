@@ -12,8 +12,8 @@ class ComandoApagarPessoa(Comando):
     def executar(self) -> str:
         dados_pessoa_apagada: str = self.banco.ler_pessoa(self.cpf)
 
-        if not dados_pessoa_apagada:
-            return "Pessoa não encontrada."
+        if dados_pessoa_apagada == "Pessoa não encontrada." or dados_pessoa_apagada == "Sem pessoas cadastradas.":
+            return dados_pessoa_apagada
 
         dados_pessoa_apagada_list: list = dados_pessoa_apagada.split(';')
         self.pessoa_apagada = Pessoa(
