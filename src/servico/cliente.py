@@ -7,7 +7,7 @@ class Cliente:
         self.porta: int = porta
 
 
-    def enviar_mensagem(self, mensagem) -> None:
+    def enviar_mensagem(self, mensagem: str) -> None:
         with socket.create_connection((self.host, self.porta)) as cliente:
             cliente.send(mensagem.encode())
             resposta = cliente.recv(1024).decode()

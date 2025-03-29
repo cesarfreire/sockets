@@ -86,7 +86,7 @@ class BancoDeDadosLocal(BancoDeDados):
         self.times[novo_id] = (f"{time.nome};"
                                f"{time.categoria};"
                                f"{time.pais_origem};"
-                               f"{time.quantidade_titulos};")
+                               f"{time.quantidade_titulos}")
         if novo_id not in self.times_pessoas:
             self.times_pessoas[novo_id] = []
         # Adiciona as pessoas associadas ao time
@@ -124,10 +124,7 @@ class BancoDeDadosLocal(BancoDeDados):
 
         linhas: list = []
         for id_time, info in self.times.items():
-            partes = info.split(";")
-            print(f"partes: {partes}")
             pessoas_cpf = self.times_pessoas[id_time] if id_time in self.times_pessoas else []
-            print(f"pessoas_cpf: {pessoas_cpf}")
             pessoas = [f"{cpf};{self.pessoas[cpf]}" for cpf in pessoas_cpf if pessoas_cpf is not None]
             linha_final = '-' * 50
             if len(pessoas) > 0:
@@ -139,7 +136,6 @@ class BancoDeDadosLocal(BancoDeDados):
                 linhas.append(linha)
                 linhas.append(linha_final)
 
-        print(f"linhas: {linhas}")
         return f"{total}\n" + "\n".join(linhas)
 
     def atualizar_time(self, time: Time) -> str:

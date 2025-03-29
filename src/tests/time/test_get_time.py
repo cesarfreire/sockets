@@ -4,7 +4,7 @@ from src.comando.comando_abstrato import Comando
 from src.comando.time.comando_ler_time import ComandoLerTime
 
 
-def test_get_timne_deve_retornar_sucesso():
+def test_get_time_deve_retornar_sucesso():
     cmd = "GET_TIME;Flamengo"
     operacao, *dados = cmd.split(";")
 

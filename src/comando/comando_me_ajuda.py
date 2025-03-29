@@ -7,24 +7,20 @@ class ComandoMeAjuda(Comando):
         texto: str = ""
         texto += "Para utilizar o CLI, utilize um dos parâmetros abaixo:\n\n"
         texto += "Operações com Pessoa:\n"
-        texto += "INSERT;cpf;nome;endereco\n"
-        texto += "GET;cpf\n"
-        texto += "UPDATE;cpf;nome;endereco\n"
-        texto += "DELETE;cpf\n\n"
+        texto += "INSERT;cpf;nome;endereco  --> Adiciona uma pessoa\n"
+        texto += "GET;cpf                   --> Busca uma pessoa\n"
+        texto += "UPDATE;cpf;nome;endereco  --> Atualiza uma pessoa\n"
+        texto += "DELETE;cpf                --> Apaga uma pessoa\n\n"
         texto += "Operações com Time:\n"
-        texto += "INSERT_TIME;nome;categoria;pais_origem;qtd_titulos;cpf1;cpf2\n"
-        texto += "GET_TIME;nome\n"
-        texto += "UPDATE_TIME;nome;categoria;pais_origem;qtd_titulos\n"
-        texto += "DELETE_TIME;nome\n\n"
+        texto += "INSERT_TIME;nome;categoria;pais_origem;qtd_titulos;cpf1;cpf2  --> Adiciona um time (CPF's opcionais)\n"
+        texto += "GET_TIME;nome                                                 --> Busca um time\n"
+        texto += "UPDATE_TIME;nome;categoria;pais_origem;qtd_titulos            --> Atualiza um time\n"
+        texto += "DELETE_TIME;nome                                              --> Apaga um time\n"
+        texto += "ADD_PESSOA;nome_time;cpf_pessoa                               --> Adiciona pessoa ao time\n"
+        texto += "REMOVE_PESSOA;nome_time;cpf_pessoa                            --> Remove pessoa do time\n\n"
         texto += "Utilize o delimitador \";\" para informar os dados.\n"
         texto += "-"*50
         return texto
-
-    # nome = dados[0]
-    #                 categoria = dados[1]
-    #                 pais_origem = dados[2]
-    #                 qtd_titulos = dados[3]
-    #                 cpfs = dados[4:]
 
     def desfazer(self) -> str:
         return ""
