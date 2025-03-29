@@ -18,7 +18,7 @@ class BancoDeDadosLocal(BancoDeDados):
         } if not iniciar_zerado else {}
 
         self.times_pessoas: dict[int, list[str]] = {
-            1: ["11111111111", "98765432100"],
+            1: ["98765432100"],
             2: ["12345678900"]
         } if not iniciar_zerado else {}
 
@@ -87,11 +87,10 @@ class BancoDeDadosLocal(BancoDeDados):
                                f"{time.categoria};"
                                f"{time.pais_origem};"
                                f"{time.quantidade_titulos};")
-
+        if novo_id not in self.times_pessoas:
+            self.times_pessoas[novo_id] = []
         # Adiciona as pessoas associadas ao time
         for pessoa in time.participantes:
-            if novo_id not in self.times_pessoas:
-                self.times_pessoas[novo_id] = []
             self.times_pessoas[novo_id].append(pessoa.cpf)
 
         return "Time criado com sucesso."
@@ -109,13 +108,12 @@ class BancoDeDadosLocal(BancoDeDados):
         # para cada time
         for id_time, info in self.times.items():
             partes: list = info.split(";")
-            print(f"partes: {partes}")
             if partes[0] == nome:
                 pessoas_cpf = self.times_pessoas[id_time] if id_time in self.times_pessoas else []
                 pessoas = [f"{cpf};{self.pessoas[cpf]}" for cpf in pessoas_cpf if pessoas_cpf is not None]
 
                 if len(pessoas) > 0:
-                    return f"{info}" + ";" + ";".join(pessoas)
+                    return f"{info};" + ";".join(pessoas)
                 return f"{info}"
         return "Time não encontrado."
 
@@ -152,3 +150,33 @@ class BancoDeDadosLocal(BancoDeDados):
 
         return "Time não encontrado."
 
+
+    def adicionar_pessoa_ao_time(self, time: Time, pessoa: Pessoa) -> str:
+        # Verifica se o time existe
+        for id_time, info in self.times.items():
+            partes = info.split(";")
+            if partes[0] == time.nome:
+                # Verifica se a pessoa já está associada ao time
+                if pessoa.cpf in self.times_pessoas[id_time]:
+                    return "Erro: Pessoa já associada ao time."
+
+                # Adiciona a pessoa ao time
+                if id_time not in self.times_pessoas:
+                    self.times_pessoas[id_time] = []
+                self.times_pessoas[id_time].append(pessoa.cpf)
+                return "Pessoa adicionada ao time com sucesso."
+        return "Time não encontrado."
+
+    def remover_pessoa_do_time(self, time: Time, pessoa: Pessoa) -> str:
+        # Verifica se o time existe
+        for id_time, info in self.times.items():
+            partes = info.split(";")
+            if partes[0] == time.nome:
+                # Verifica se a pessoa está associada ao time
+                if pessoa.cpf not in self.times_pessoas[id_time]:
+                    return "Erro: Pessoa não está associada ao time."
+
+                # Remove a pessoa do time
+                self.times_pessoas[id_time].remove(pessoa.cpf)
+                return "Pessoa removida do time com sucesso."
+        return "Time não encontrado."

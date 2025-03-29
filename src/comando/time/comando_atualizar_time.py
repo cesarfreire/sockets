@@ -11,8 +11,8 @@ class ComandoAtualizarTime(Comando):
 
     def executar(self) -> str:
         dados_antigos: str = self.banco.ler_time(self.time.nome)
-        if not dados_antigos:
-            return "Time não encontrado."
+        if dados_antigos == "Time não encontrado.":
+            return dados_antigos
 
         dados_antigos_list = dados_antigos.split(';')
         self.time_antigo: Time = Time(

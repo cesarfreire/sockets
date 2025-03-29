@@ -14,8 +14,8 @@ class ComandoApagarTime(Comando):
     def executar(self) -> str:
         dados_time_apagado: str = self.banco.ler_time(self.nome)
 
-        if not dados_time_apagado:
-            return "Time não encontrado."
+        if dados_time_apagado == 'Time não encontrado.':
+            return dados_time_apagado
 
         dados_time_apagado_list: list = dados_time_apagado.split(';', 4)
         nome: str = dados_time_apagado_list[0]

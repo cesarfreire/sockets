@@ -10,11 +10,13 @@ from src.comando.pessoa.comando_atualizar_pessoa import ComandoAtualizarPessoa
 from src.comando.pessoa.comando_criar_pessoa import ComandoCriarPessoa
 from src.comando.pessoa.comando_ler_pessoa import ComandoLerPessoa
 from src.comando.pessoa.comando_listar_pessoas import ComandoListarPessoas
+from src.comando.time.comando_adicionar_pessoa_ao_time import ComandoAdicionarPessoaAoTime
 from src.comando.time.comando_apagar_time import ComandoApagarTime
 from src.comando.time.comando_atualizar_time import ComandoAtualizarTime
 from src.comando.time.comando_criar_time import ComandoCriarTime
 from src.comando.time.comando_ler_time import ComandoLerTime
 from src.comando.time.comando_listar_times import ComandoListarTimes
+from src.comando.time.comando_remover_pessoa_do_time import ComandoRemoverPessoaDoTime
 from src.modelo.pessoa import Pessoa
 from src.modelo.time import Time
 
@@ -27,7 +29,7 @@ class Servidor:
         self.servidor: socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.servidor.bind((self.host, self.porta))
         self.servidor.listen(5)
-        self.banco: BancoDeDados = BancoDeDadosLocal()
+        self.banco: BancoDeDados = BancoDeDadosLocal(iniciar_zerado=False)
         self.pilha_comandos: PilhaComandos = PilhaComandos()
         print(f"Servidor escutando em {self.host}:{self.porta}")
 
@@ -83,6 +85,10 @@ class Servidor:
                 comando = ComandoApagarTime(self.banco, dados[0])
             elif operacao == 'LIST_TIMES':
                 comando = ComandoListarTimes(self.banco)
+            elif operacao == 'ADD_PESSOA' and len(dados) == 2:
+                comando = ComandoAdicionarPessoaAoTime(self.banco, nome_time=dados[0], cpf=dados[1])
+            elif operacao == 'REMOVE_PESSOA' and len(dados) == 2:
+                comando = ComandoRemoverPessoaDoTime(self.banco, nome_time=dados[0], cpf=dados[1])
 
 
             # Comandos de controle

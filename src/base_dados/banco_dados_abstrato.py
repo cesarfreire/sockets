@@ -50,3 +50,11 @@ class BancoDeDados(ABC):
     @abstractmethod
     def listar_times(self) -> str:
         pass
+
+    @abstractmethod
+    def adicionar_pessoa_ao_time(self, time: Time, pessoa: Pessoa) -> str:
+        pass
+
+    @abstractmethod
+    def remover_pessoa_do_time(self, time: Time, pessoa: Pessoa) -> str:
+        pass

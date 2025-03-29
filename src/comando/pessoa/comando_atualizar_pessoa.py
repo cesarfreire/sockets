@@ -11,8 +11,10 @@ class ComandoAtualizarPessoa(Comando):
 
     def executar(self) -> str:
         dados_antigos: str = self.banco.ler_pessoa(self.pessoa.cpf)
-        if not dados_antigos:
-            return "Pessoa não encontrada."
+        if dados_antigos == "Sem pessoas cadastradas":
+            return dados_antigos
+        if dados_antigos == "Pessoa não encontrada.":
+            return dados_antigos
 
         dados_antigos_list = dados_antigos.split(';')
         self.pessoa_antiga = Pessoa(
