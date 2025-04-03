@@ -5,10 +5,40 @@ if __name__ == "__main__":
     opcao = input("Digite 'servidor' para iniciar o servidor ou 'cliente' para conectar: ").strip().lower()
     try:
         if opcao == 'servidor':
-            servidor = Servidor()
+            host = input("Digite o ip do servidor [default = 127.0.0.1]: ")
+            if host != "":
+                for parte in host.split("."):
+                    if not 0 <= int(parte) <= 255:
+                        raise ValueError("IP inválido. Exemplos de IPs válidos: 127.0.0.1, 15.15.15.15")
+
+            porta = input("Digite a porta do servidor [default = 3334]: ")
+            if porta != "":
+                porta = int(porta)
+                if not (1 <= porta <= 65535):
+                    raise ValueError("Porta deve estar entre 1 e 65535.")
+
+            servidor = Servidor(
+                host=host if host else "127.0.0.1",
+                porta=porta if porta else 3334
+            )
             servidor.iniciar()
         elif opcao == 'cliente':
-            cliente = Cliente()
+            host = input("Digite o ip do servidor onde deseja se conectar [default = 127.0.0.1]: ")
+            if host != "":
+                for parte in host.split("."):
+                    if not 0 <= int(parte) <= 255:
+                        raise ValueError("IP inválido. Exemplos de IPs válidos: 127.0.0.1, 15.15.15.15")
+
+            porta = input("Digite a porta do servidor onde deseja se conectar [default = 3334]: ")
+            if porta != "":
+                porta = int(porta)
+                if not (1 <= porta <= 65535):
+                    raise ValueError("Porta deve estar entre 1 e 65535.")
+
+            cliente = Cliente(
+                host=host if host else "127.0.0.1",
+                porta=porta if porta else 3334
+            )
             while True:
                 msg = input("Digite uma operação (digite HELP para ajuda) ou 'sair' para encerrar: ")
                 if msg.lower() == 'sair':
@@ -16,3 +46,7 @@ if __name__ == "__main__":
                 cliente.enviar_mensagem(msg)
     except OSError as e:
         print(f"Ocorreu um erro: {e}")
+    except ValueError as e:
+        print(f"O valor informado é inválido: {e}")
+    except Exception as e:
+        print(f"Ocorreu um erro inesperado: {e}")

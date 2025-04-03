@@ -26,12 +26,23 @@ class Servidor:
     def __init__(self, host='127.0.0.1', porta=3334) -> None:
         self.host: str = host
         self.porta: int = porta
+        self.__validate()
         self.servidor: socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.servidor.bind((self.host, self.porta))
         self.servidor.listen(5)
         self.banco: BancoDeDados = BancoDeDadosLocal(iniciar_zerado=False)
         self.pilha_comandos: PilhaComandos = PilhaComandos()
         print(f"Servidor escutando em {self.host}:{self.porta}")
+
+    def __validate(self):
+        if self.host != "":
+            for parte in self.host.split("."):
+                if not 0 <= int(parte) <= 255:
+                    raise ValueError("IP inválido. Exemplos de IPs válidos: 127.0.0.1, 15.15.15.15")
+        if self.porta != "":
+            porta = int(self.porta)
+            if not (1 <= porta <= 65535):
+                raise ValueError("Porta deve estar entre 1 e 65535.")
 
     def handle_cliente(self, conexao, endereco) -> None:
         print(f"Nova conexão de {endereco}")
