@@ -6,7 +6,7 @@ from src.modelo.time import Time
 
 
 def test_insert_time_sem_pessoas_deve_retornar_sucesso():
-    cmd = "INSERT;Bangu;Amador;Brasil;3"
+    cmd = "INSERT_TIME;Bangu;Amador;Brasil;3"
     operacao, *dados = cmd.split(";")
 
     assert len(dados) == 4
@@ -29,7 +29,7 @@ def test_insert_time_sem_pessoas_deve_retornar_sucesso():
 
 
 def test_insert_time_com_pessoas_deve_retornar_sucesso():
-    cmd = "INSERT;Fluminense;Profissional;Brasil;1"
+    cmd = "INSERT_TIME;Fluminense;Profissional;Brasil;1"
     operacao, *dados = cmd.split(";")
 
     assert len(dados) == 4

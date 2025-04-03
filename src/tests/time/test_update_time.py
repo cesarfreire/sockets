@@ -7,7 +7,7 @@ from src.modelo.time import Time
 
 
 def test_update_time_deve_retornar_sucesso():
-    cmd = "UPDATE;Flamengo;Amador;Brasil;9999"
+    cmd = "UPDATE_TIME;Flamengo;Amador;Brasil;9999"
     operacao, *dados = cmd.split(";")
 
     assert len(dados) == 4
@@ -29,7 +29,7 @@ def test_update_time_deve_retornar_sucesso():
 
 
 def test_update_time_inexistente_deve_retornar_erro():
-    cmd = "UPDATE;Abobrinha;Amador;Paraguai;123"
+    cmd = "UPDATE_TIME;Abobrinha;Amador;Paraguai;123"
     operacao, *dados = cmd.split(";")
 
     assert len(dados) == 4
