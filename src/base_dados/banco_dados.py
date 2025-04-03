@@ -6,7 +6,7 @@ from src.modelo.time import Time
 
 class BancoDeDadosLocal(BancoDeDados):
     def __init__(self, iniciar_zerado: bool = False):
-        self.pessoas: dict = {
+        self.pessoas: dict[str, str] = {
             "12345678900": "Fulano;Rua A",
             "98765432100": "Ciclano;Rua B",
             "11111111111": "Cesar;Wenceslau Borini"
