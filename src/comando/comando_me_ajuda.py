@@ -1,4 +1,3 @@
-from src.base_dados.banco_dados_abstrato import BancoDeDados
 from src.comando.comando_abstrato import Comando
 
 
@@ -18,8 +17,8 @@ class ComandoMeAjuda(Comando):
         texto += "DELETE_TIME;nome                                              --> Apaga um time\n"
         texto += "ADD_PESSOA;nome_time;cpf_pessoa                               --> Adiciona pessoa ao time\n"
         texto += "REMOVE_PESSOA;nome_time;cpf_pessoa                            --> Remove pessoa do time\n\n"
-        texto += "Utilize o delimitador \";\" para informar os dados.\n"
-        texto += "-"*50
+        texto += 'Utilize o delimitador ";" para informar os dados.\n'
+        texto += "-" * 50
         return texto
 
     def desfazer(self) -> str:

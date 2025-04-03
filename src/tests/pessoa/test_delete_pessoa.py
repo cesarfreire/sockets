@@ -12,11 +12,7 @@ def test_delete_pessoa_deve_retornar_sucesso():
 
     assert len(dados) == 3
     banco: BancoDeDados = BancoDeDadosLocal()
-    pessoa = Pessoa(
-        cpf=dados[0],
-        nome=dados[1],
-        endereco=dados[2]
-    )
+    pessoa = Pessoa(cpf=dados[0], nome=dados[1], endereco=dados[2])
     assert isinstance(pessoa, Pessoa)
     comando_insert = ComandoCriarPessoa(banco, pessoa=pessoa)
     assert isinstance(comando_insert, Comando)

@@ -6,21 +6,28 @@ from src.modelo.time import Time
 
 class BancoDeDadosLocal(BancoDeDados):
     def __init__(self, iniciar_zerado: bool = False):
-        self.pessoas: dict[str, str] = {
-            "12345678900": "Fulano;Rua A",
-            "98765432100": "Ciclano;Rua B",
-            "11111111111": "Cesar;Wenceslau Borini"
-        } if not iniciar_zerado else {}
+        self.pessoas: dict[str, str] = (
+            {
+                "12345678900": "Fulano;Rua A",
+                "98765432100": "Ciclano;Rua B",
+                "11111111111": "Cesar;Wenceslau Borini",
+            }
+            if not iniciar_zerado
+            else {}
+        )
 
-        self.times: dict[int, str | None] = {
-            1: "Flamengo;Profissional;Brasil;58",
-            2: "Corinthians;Profissional;Brasil;2"
-        } if not iniciar_zerado else {}
+        self.times: dict[int, str | None] = (
+            {
+                1: "Flamengo;Profissional;Brasil;58",
+                2: "Corinthians;Profissional;Brasil;2",
+            }
+            if not iniciar_zerado
+            else {}
+        )
 
-        self.times_pessoas: dict[int, list[str]] = {
-            1: ["98765432100"],
-            2: ["12345678900"]
-        } if not iniciar_zerado else {}
+        self.times_pessoas: dict[int, list[str]] = (
+            {1: ["98765432100"], 2: ["12345678900"]} if not iniciar_zerado else {}
+        )
 
     def criar_pessoa(self, pessoa: Pessoa) -> str:
         if pessoa.cpf in self.pessoas:
@@ -63,7 +70,7 @@ class BancoDeDadosLocal(BancoDeDados):
             return str(total)
 
         linhas: list = []
-        linha_final = '-' * 50
+        linha_final = "-" * 50
         for cpf, info in self.pessoas.items():
             linha = f"{cpf};{info}"
             linhas.append(linha)
@@ -83,10 +90,9 @@ class BancoDeDadosLocal(BancoDeDados):
 
         # Gera novo ID para o time
         novo_id = max(self.times.keys(), default=0) + 1
-        self.times[novo_id] = (f"{time.nome};"
-                               f"{time.categoria};"
-                               f"{time.pais_origem};"
-                               f"{time.quantidade_titulos}")
+        self.times[novo_id] = (
+            f"{time.nome};{time.categoria};{time.pais_origem};{time.quantidade_titulos}"
+        )
         if novo_id not in self.times_pessoas:
             self.times_pessoas[novo_id] = []
         # Adiciona as pessoas associadas ao time
@@ -109,8 +115,14 @@ class BancoDeDadosLocal(BancoDeDados):
         for id_time, info in self.times.items():
             partes: list = info.split(";")
             if partes[0] == nome:
-                pessoas_cpf = self.times_pessoas[id_time] if id_time in self.times_pessoas else []
-                pessoas = [f"{cpf};{self.pessoas[cpf]}" for cpf in pessoas_cpf if pessoas_cpf is not None]
+                pessoas_cpf = (
+                    self.times_pessoas[id_time] if id_time in self.times_pessoas else []
+                )
+                pessoas = [
+                    f"{cpf};{self.pessoas[cpf]}"
+                    for cpf in pessoas_cpf
+                    if pessoas_cpf is not None
+                ]
 
                 if len(pessoas) > 0:
                     return f"{info};" + ";".join(pessoas)
@@ -124,9 +136,15 @@ class BancoDeDadosLocal(BancoDeDados):
 
         linhas: list = []
         for id_time, info in self.times.items():
-            pessoas_cpf = self.times_pessoas[id_time] if id_time in self.times_pessoas else []
-            pessoas = [f"{cpf};{self.pessoas[cpf]}" for cpf in pessoas_cpf if pessoas_cpf is not None]
-            linha_final = '-' * 50
+            pessoas_cpf = (
+                self.times_pessoas[id_time] if id_time in self.times_pessoas else []
+            )
+            pessoas = [
+                f"{cpf};{self.pessoas[cpf]}"
+                for cpf in pessoas_cpf
+                if pessoas_cpf is not None
+            ]
+            linha_final = "-" * 50
             if len(pessoas) > 0:
                 linha = f"{id_time};{info}\nPessoas:\n" + "\n".join(pessoas)
                 linhas.append(linha)
@@ -145,7 +163,6 @@ class BancoDeDadosLocal(BancoDeDados):
                 return "Time atualizado com sucesso."
 
         return "Time não encontrado."
-
 
     def adicionar_pessoa_ao_time(self, time: Time, pessoa: Pessoa) -> str:
         # Verifica se o time existe

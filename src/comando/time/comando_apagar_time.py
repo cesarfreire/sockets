@@ -1,6 +1,5 @@
 from src.base_dados.banco_dados_abstrato import BancoDeDados
 from src.comando.comando_abstrato import Comando
-from src.modelo.pessoa import Pessoa
 from src.modelo.time import Time
 import re
 
@@ -14,10 +13,10 @@ class ComandoApagarTime(Comando):
     def executar(self) -> str:
         dados_time_apagado: str = self.banco.ler_time(self.nome)
 
-        if dados_time_apagado == 'Time não encontrado.':
+        if dados_time_apagado == "Time não encontrado.":
             return dados_time_apagado
 
-        dados_time_apagado_list: list = dados_time_apagado.split(';', 4)
+        dados_time_apagado_list: list = dados_time_apagado.split(";", 4)
         nome: str = dados_time_apagado_list[0]
         categoria: str = dados_time_apagado_list[1]
         pais_origem: str = dados_time_apagado_list[2]

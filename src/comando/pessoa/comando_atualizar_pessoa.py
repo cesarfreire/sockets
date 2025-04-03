@@ -16,7 +16,7 @@ class ComandoAtualizarPessoa(Comando):
         if dados_antigos == "Pessoa não encontrada.":
             return dados_antigos
 
-        dados_antigos_list = dados_antigos.split(';')
+        dados_antigos_list = dados_antigos.split(";")
         self.pessoa_antiga = Pessoa(
             dados_antigos_list[0], dados_antigos_list[1], dados_antigos_list[2]
         )

@@ -10,7 +10,9 @@ from src.comando.pessoa.comando_atualizar_pessoa import ComandoAtualizarPessoa
 from src.comando.pessoa.comando_criar_pessoa import ComandoCriarPessoa
 from src.comando.pessoa.comando_ler_pessoa import ComandoLerPessoa
 from src.comando.pessoa.comando_listar_pessoas import ComandoListarPessoas
-from src.comando.time.comando_adicionar_pessoa_ao_time import ComandoAdicionarPessoaAoTime
+from src.comando.time.comando_adicionar_pessoa_ao_time import (
+    ComandoAdicionarPessoaAoTime,
+)
 from src.comando.time.comando_apagar_time import ComandoApagarTime
 from src.comando.time.comando_atualizar_time import ComandoAtualizarTime
 from src.comando.time.comando_criar_time import ComandoCriarTime
@@ -19,11 +21,12 @@ from src.comando.time.comando_listar_times import ComandoListarTimes
 from src.comando.time.comando_remover_pessoa_do_time import ComandoRemoverPessoaDoTime
 from src.modelo.pessoa import Pessoa
 from src.modelo.time import Time
+from src.utils import utils
 
 
 # Servidor Socket
 class Servidor:
-    def __init__(self, host='127.0.0.1', porta=3334) -> None:
+    def __init__(self, host="127.0.0.1", porta=3334) -> None:
         self.host: str = host
         self.porta: int = porta
         self.__validate()
@@ -35,20 +38,19 @@ class Servidor:
         print(f"Servidor escutando em {self.host}:{self.porta}")
 
     def __validate(self):
-        if self.host != "":
-            for parte in self.host.split("."):
-                if not 0 <= int(parte) <= 255:
-                    raise ValueError("IP inválido. Exemplos de IPs válidos: 127.0.0.1, 15.15.15.15")
-        if self.porta != "":
-            porta = int(self.porta)
-            if not (1 <= porta <= 65535):
-                raise ValueError("Porta deve estar entre 1 e 65535.")
+        if not utils.is_valid_host(host=self.host):
+            raise ValueError(
+                "IP inválido. Exemplos de IPs válidos: 127.0.0.1, 15.15.15.15"
+            )
+
+        if not utils.is_valid_port(port=int(self.porta)):
+            raise ValueError("Porta deve estar entre 1 e 65535.")
 
     def handle_cliente(self, conexao, endereco) -> None:
         print(f"Nova conexão de {endereco}")
         while True:
             mensagem = conexao.recv(1024).decode()
-            if not mensagem or mensagem.lower() == 'sair':
+            if not mensagem or mensagem.lower() == "sair":
                 print(f"Conexão encerrada com {endereco}")
                 break
 
@@ -56,21 +58,21 @@ class Servidor:
             comando = None
 
             # Comandos para Pessoa
-            if operacao == 'INSERT' and len(dados) == 3:
+            if operacao == "INSERT" and len(dados) == 3:
                 pessoa = Pessoa(dados[0], dados[1], dados[2])
                 comando = ComandoCriarPessoa(self.banco, pessoa)
-            elif operacao == 'GET' and len(dados) == 1:
+            elif operacao == "GET" and len(dados) == 1:
                 comando = ComandoLerPessoa(self.banco, dados[0])
-            elif operacao == 'UPDATE' and len(dados) == 3:
+            elif operacao == "UPDATE" and len(dados) == 3:
                 pessoa = Pessoa(dados[0], dados[1], dados[2])
                 comando = ComandoAtualizarPessoa(self.banco, pessoa)
-            elif operacao == 'DELETE' and len(dados) == 1:
+            elif operacao == "DELETE" and len(dados) == 1:
                 comando = ComandoApagarPessoa(self.banco, dados[0])
-            elif operacao == 'LIST':
+            elif operacao == "LIST":
                 comando = ComandoListarPessoas(self.banco)
 
             # Comandos para Time
-            elif operacao == 'INSERT_TIME' and len(dados) >= 4:
+            elif operacao == "INSERT_TIME" and len(dados) >= 4:
                 nome = dados[0]
                 categoria = dados[1]
                 pais_origem = dados[2]
@@ -78,9 +80,9 @@ class Servidor:
                 cpfs = dados[4:]
                 time = Time(nome, categoria, pais_origem, qtd_titulos)
                 comando = ComandoCriarTime(self.banco, time, cpfs)
-            elif operacao == 'GET_TIME' and len(dados) == 1:
+            elif operacao == "GET_TIME" and len(dados) == 1:
                 comando = ComandoLerTime(self.banco, dados[0])
-            elif operacao == 'UPDATE_TIME' and len(dados) == 4:
+            elif operacao == "UPDATE_TIME" and len(dados) == 4:
                 nome = dados[0]
                 categoria = dados[1]
                 pais_origem = dados[2]
@@ -89,29 +91,32 @@ class Servidor:
                     nome=nome,
                     categoria=categoria,
                     pais_origem=pais_origem,
-                    quantidade_titulos=quantidade_titulos
+                    quantidade_titulos=quantidade_titulos,
                 )
                 comando = ComandoAtualizarTime(self.banco, time=time)
-            elif operacao == 'DELETE_TIME' and len(dados) == 1:
+            elif operacao == "DELETE_TIME" and len(dados) == 1:
                 comando = ComandoApagarTime(self.banco, dados[0])
-            elif operacao == 'LIST_TIMES':
+            elif operacao == "LIST_TIMES":
                 comando = ComandoListarTimes(self.banco)
-            elif operacao == 'ADD_PESSOA' and len(dados) == 2:
-                comando = ComandoAdicionarPessoaAoTime(self.banco, nome_time=dados[0], cpf=dados[1])
-            elif operacao == 'REMOVE_PESSOA' and len(dados) == 2:
-                comando = ComandoRemoverPessoaDoTime(self.banco, nome_time=dados[0], cpf=dados[1])
-
+            elif operacao == "ADD_PESSOA" and len(dados) == 2:
+                comando = ComandoAdicionarPessoaAoTime(
+                    self.banco, nome_time=dados[0], cpf=dados[1]
+                )
+            elif operacao == "REMOVE_PESSOA" and len(dados) == 2:
+                comando = ComandoRemoverPessoaDoTime(
+                    self.banco, nome_time=dados[0], cpf=dados[1]
+                )
 
             # Comandos de controle
-            elif operacao == 'UNDO':
+            elif operacao == "UNDO":
                 resposta = self.pilha_comandos.desfazer()
                 conexao.send(resposta.encode())
                 continue
-            elif operacao == 'REDO':
+            elif operacao == "REDO":
                 resposta = self.pilha_comandos.refazer()
                 conexao.send(resposta.encode())
                 continue
-            elif operacao == 'HELP':
+            elif operacao == "HELP":
                 comando = ComandoMeAjuda()
 
             if comando:
@@ -125,5 +130,7 @@ class Servidor:
     def iniciar(self) -> None:
         while True:
             conexao, endereco = self.servidor.accept()
-            thread = threading.Thread(target=self.handle_cliente, args=(conexao, endereco))
+            thread = threading.Thread(
+                target=self.handle_cliente, args=(conexao, endereco)
+            )
             thread.start()

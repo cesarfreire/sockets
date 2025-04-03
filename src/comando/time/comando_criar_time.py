@@ -16,8 +16,10 @@ class ComandoCriarTime(Comando):
                 return f"Pessoa com cpf {cpf} não encontrada."
 
             dados_pessoa = self.banco.ler_pessoa(cpf)
-            dados_pessoa_list = dados_pessoa.split(';')
-            pessoa = Pessoa(dados_pessoa_list[0], dados_pessoa_list[1], dados_pessoa_list[2])
+            dados_pessoa_list = dados_pessoa.split(";")
+            pessoa = Pessoa(
+                dados_pessoa_list[0], dados_pessoa_list[1], dados_pessoa_list[2]
+            )
             self.time.adicionar_participante(pessoa)
         return self.banco.criar_time(self.time)
 

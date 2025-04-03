@@ -14,12 +14,12 @@ class ComandoAtualizarTime(Comando):
         if dados_antigos == "Time não encontrado.":
             return dados_antigos
 
-        dados_antigos_list = dados_antigos.split(';')
+        dados_antigos_list = dados_antigos.split(";")
         self.time_antigo: Time = Time(
             nome=dados_antigos_list[0],
             categoria=dados_antigos_list[1],
             pais_origem=dados_antigos_list[2],
-            quantidade_titulos=int(dados_antigos_list[3])
+            quantidade_titulos=int(dados_antigos_list[3]),
         )
         return self.banco.atualizar_time(self.time)
 
@@ -28,4 +28,3 @@ class ComandoAtualizarTime(Comando):
 
     def refazer(self) -> str:
         return self.executar()
-

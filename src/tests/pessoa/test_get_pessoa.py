@@ -12,11 +12,7 @@ def test_get_pessoa_deve_retornar_sucesso():
 
     assert len(dados) == 3
     banco: BancoDeDados = BancoDeDadosLocal()
-    pessoa = Pessoa(
-        cpf=dados[0],
-        nome=dados[1],
-        endereco=dados[2]
-    )
+    pessoa = Pessoa(cpf=dados[0], nome=dados[1], endereco=dados[2])
     assert isinstance(pessoa, Pessoa)
     comando_insert = ComandoCriarPessoa(banco, pessoa=pessoa)
     assert isinstance(comando_insert, Comando)
@@ -28,7 +24,6 @@ def test_get_pessoa_deve_retornar_sucesso():
     assert isinstance(response_get, Comando)
     response_get = response_get.executar()
     assert response_get == f"{pessoa.cpf};{pessoa.nome};{pessoa.endereco}"
-
 
 
 def test_get_pessoa_inexistente_deve_retornar_nao_encontrada():

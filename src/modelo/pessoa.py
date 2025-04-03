@@ -8,4 +8,4 @@ class Pessoa(Entidade):
         self.endereco: str = endereco
 
     def __str__(self) -> str:
-        return f'{self.nome};{self.endereco}'
+        return f"{self.nome};{self.endereco}"

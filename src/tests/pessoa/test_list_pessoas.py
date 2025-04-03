@@ -12,11 +12,7 @@ def test_list_pessoas_deve_retornar_sucesso():
     cmd = "INSERT;10481485996;CESAR;WENCESLAU BORINI"
     operacao, *dados = cmd.split(";")
     assert len(dados) == 3
-    pessoa = Pessoa(
-        cpf=dados[0],
-        nome=dados[1],
-        endereco=dados[2]
-    )
+    pessoa = Pessoa(cpf=dados[0], nome=dados[1], endereco=dados[2])
     assert isinstance(pessoa, Pessoa)
     comando_insert = ComandoCriarPessoa(banco, pessoa=pessoa)
     assert isinstance(comando_insert, Comando)
@@ -26,7 +22,11 @@ def test_list_pessoas_deve_retornar_sucesso():
     comando = ComandoListarPessoas(banco)
     assert isinstance(comando, Comando)
     response = comando.executar()
-    assert response == "1\n10481485996;CESAR;WENCESLAU BORINI\n--------------------------------------------------"
+    assert (
+        response
+        == "1\n10481485996;CESAR;WENCESLAU BORINI\n--------------------------------------------------"
+    )
+
 
 def test_list_pessoas_sem_dados_deve_retornar_zero():
     banco: BancoDeDados = BancoDeDadosLocal(iniciar_zerado=True)

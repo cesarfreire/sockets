@@ -16,6 +16,7 @@ def test_get_time_deve_retornar_sucesso():
     response_get = comando_get_time.executar()
     assert response_get == "Flamengo;Profissional;Brasil;58;98765432100;Ciclano;Rua B"
 
+
 def test_get_time_inexistente_deve_retornar_time_nao_encontrado():
     cmd = "GET_TIME;ABOBRINHA"
     operacao, *dados = cmd.split(";")

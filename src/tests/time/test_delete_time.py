@@ -17,6 +17,7 @@ def test_delete_timne_deve_retornar_sucesso():
     response_get = comando_delete_time.executar()
     assert response_get == "Time removido com sucesso."
 
+
 def test_delete_time_inexistente_deve_retornar_time_nao_encontrado():
     cmd = "DELETE_TIME;ABOBRINHA"
     operacao, *dados = cmd.split(";")

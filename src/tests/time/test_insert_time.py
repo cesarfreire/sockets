@@ -15,14 +15,10 @@ def test_insert_time_sem_pessoas_deve_retornar_sucesso():
         nome=dados[0],
         categoria=dados[1],
         pais_origem=dados[2],
-        quantidade_titulos=dados[3]
+        quantidade_titulos=dados[3],
     )
 
-    comando_insert = ComandoCriarTime(
-        banco=banco,
-        time=time,
-        cpfs=[]
-    )
+    comando_insert = ComandoCriarTime(banco=banco, time=time, cpfs=[])
     assert isinstance(comando_insert, Comando)
     response_get = comando_insert.executar()
     assert response_get == "Time criado com sucesso."
@@ -38,14 +34,10 @@ def test_insert_time_com_pessoas_deve_retornar_sucesso():
         nome=dados[0],
         categoria=dados[1],
         pais_origem=dados[2],
-        quantidade_titulos=dados[3]
+        quantidade_titulos=dados[3],
     )
 
-    comando_insert = ComandoCriarTime(
-        banco=banco,
-        time=time,
-        cpfs=["11111111111"]
-    )
+    comando_insert = ComandoCriarTime(banco=banco, time=time, cpfs=["11111111111"])
     assert isinstance(comando_insert, Comando)
     response_get = comando_insert.executar()
     assert response_get == "Time criado com sucesso."
