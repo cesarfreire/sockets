@@ -23,3 +23,15 @@ Este é um projeto em Python que demonstra o uso de sockets para comunicação e
     python main.py
     ```
 5. Escolhe o modo de operação: `servidor` ou `cliente`.
+
+## Testes
+
+Para executar os testes, é necessário ter o `pytest` instalado. Você pode instalar o `pytest` usando o seguinte comando:
+```bash
+pip install pytest
+```
+
+Depois de instalar o `pytest`, você pode executar os testes com o seguinte comando:
+```bash
+pytest
+```
